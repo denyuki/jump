@@ -1,8 +1,9 @@
 {
-    "name": "test",
+    "name": "jump",
     "description": "",
     "dependencies": {
-        "device": "*"
+        "device": "*",
+        "storyboard": "*"
     },
     "files": [
         "main.blocks",
