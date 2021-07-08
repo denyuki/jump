@@ -1,13 +1,25 @@
-controller.right.onEvent(ControllerButtonEvent.Repeated, function () {
-    mySprite.x += 3
-})
-controller.left.onEvent(ControllerButtonEvent.Repeated, function () {
-    mySprite.x += -3
-})
+function Grabity () {
+    if (Gravity == 1) {
+        if (VY < 5) {
+            VY = VY + G
+        }
+        mySprite.y += VY
+    }
+    if (mySprite.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0)) {
+        Gravity = 0
+        VY = 0
+    }
+    if (mySprite.tileKindAt(TileDirection.Bottom, assets.tile`transparency16`)) {
+        Gravity = 1
+    }
+}
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    jump = 1
+    VY = -7
+    Gravity = 1
 })
-let jump = 0
+let Gravity = 0
+let VY = 0
+let G = 0
 let mySprite: Sprite = null
 mySprite = sprites.create(img`
     . . . . . . . . . b 5 b . . . . 
@@ -27,15 +39,12 @@ mySprite = sprites.create(img`
     . . c b d d d d d 5 5 5 b b . . 
     . . . c c c c c c c c b b . . . 
     `, SpriteKind.Player)
-let G = 0.5
-let V = -10
+G = 0.3
+VY = 0
+Gravity = 1
+tiles.setTilemap(tilemap`レベル1`)
 forever(function () {
-    if (jump == 1) {
-        V = V + G
-        mySprite.y += V
-    }
-    if (mySprite.y > 100) {
-        jump = 0
-        V = -10
-    }
+    Grabity()
+    scene.cameraFollowSprite(mySprite)
+    controller.moveSprite(mySprite, 100, 100)
 })
